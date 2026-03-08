@@ -28,10 +28,10 @@ declare global {
     }
 
     type Meta = {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
+        page?: number;
+        limit?: number;
+        total?: number;
+        totalPages?: number;
     }
     type TableProps = {
         columns: Column<any>[];

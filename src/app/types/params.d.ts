@@ -2,10 +2,7 @@
 declare global {
     type Params = {
         page: number;
-        limit: number;
-        search: string;
-        order: string;
-        orderBy?: number | string;
+        per_page: number;
         [key: string]: any;
     }
 }
