@@ -3,9 +3,7 @@
 import { signOut, useSession } from 'next-auth/react';
 import React, { useState } from 'react'
 import useUserInitials from '../../hooks/useUserInitials';
-import { useDispatch, useSelector } from 'react-redux';
 import Icons from './hooks/Icons';
-import { selectSidebarExpanded } from '../../store/slices/uiSlice';
 import Modal from '../modal';
 
 
@@ -17,10 +15,6 @@ export default function Header() {
   const [open, setOpen] = useState(false)
 
   const { userIcon, logoutIcon } = Icons({ classNames: 'size-5', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
-
-  const dispatch = useDispatch()
-
-  const expanded = useSelector(selectSidebarExpanded)
 
   const handleLogout = () => {
     signOut({ redirect: true, callbackUrl: '/login' });
