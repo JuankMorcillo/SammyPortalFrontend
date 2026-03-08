@@ -1,20 +1,27 @@
 'use client';
 
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../store'
 import { useSession } from 'next-auth/react'
 import Icons from '../components/ui/hooks/Icons';
-import { fetchUsers } from '../store/slices/userSlice';
+import { clearProcessMessageUsers, fetchUsers, importUserSlice, selectLoadingUsers, selectUsersProcessMessage, selectUsersSuccess, setSuccessUsers } from '../store/slices/userSlice';
 import Table from '../components/table';
 import { user_columns } from './userColumns';
+import { fillToastInfo } from '../store/slices/toastSlice';
 
 export default function Users() {
 
     const dispatch = useDispatch<AppDispatch>()
     const { data: session } = useSession()
 
+    const loading = useSelector(selectLoadingUsers)
+    const message = useSelector(selectUsersProcessMessage)
+    const success = useSelector(selectUsersSuccess)
+
     const { downloadIcon } = Icons({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { successIcon } = Icons({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { circleXMarkIcon } = Icons({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const handleFetchUsers = async (params: Params) => {
         if (session?.user.token) {
@@ -29,7 +36,47 @@ export default function Users() {
         return { meta: { total: 0 }, data: [] };
     }
 
-    const actions: Actions[] = []
+    const importUser = async (data: any) => {
+        if (session?.user.token) {
+            await dispatch(
+                importUserSlice(data)
+            );
+        }
+    }
+
+    useEffect(() => {
+
+        if (message) {
+            dispatch(fillToastInfo({
+                id: new Date().getTime().toString(),
+                message: message || 'User imported successfully',
+                position: 'top-right',
+                icon: success ? successIcon : circleXMarkIcon,
+                duration: 3000,
+            }))
+            dispatch(clearProcessMessageUsers())
+        }
+
+
+        if (success) dispatch(setSuccessUsers(false))
+    }, [message, success])
+
+    const actions: Actions[] = [
+        {
+            name: 'Import User',
+            icon: downloadIcon,
+            action: (row) => {
+                const userData = {
+                    id: row.id,
+                    first_name: row.first_name,
+                    last_name: row.last_name,
+                    email: row.email,
+                    avatar: row.avatar,
+                }
+                importUser(userData);
+            }
+        }
+    ]
 
     const topActions: TopActions[] = []
 
