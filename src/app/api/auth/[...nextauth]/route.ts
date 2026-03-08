@@ -29,10 +29,10 @@ const handler = NextAuth({
                         }
                     }
 
-                    const res = await FetchApi(options)                    
+                    const res = await FetchApi(options)
 
                     if (res) {
-                        return res
+                        return { ...res, email: credentials?.email }
                     }
 
                 } catch (error) {
@@ -46,6 +46,7 @@ const handler = NextAuth({
         async jwt({ token, user }) {
             if (user) {
                 token.token = user.token
+                token.email = user.email
             }
             return token
         },
@@ -53,6 +54,7 @@ const handler = NextAuth({
 
             if (token && session.user) {
                 session.user.token = token.token as string
+                session.user.email = token.email as string
             }
             return session
         },
