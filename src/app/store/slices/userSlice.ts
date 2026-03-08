@@ -1,4 +1,4 @@
-import { getUsers } from "@/src/lib/api/users"
+import { getUsers, importUser } from "@/src/lib/api/users"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
@@ -23,6 +23,20 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
             return response;
         } catch (error: any) {
             console.error('Error fetching users:', error);
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+    }
+)
+
+export const importUserSlice = createAsyncThunk<any, any, { rejectValue: string }>(
+    'users/importUser',
+    async (data, { rejectWithValue }) => {
+        try {
+            const response = await importUser(data);
+            return response;
+        } catch (error: any) {
+            console.error('Error importing user:', error);
             const errorMessage = error || 'Error desconocido';
             return rejectWithValue(errorMessage);
         }
@@ -64,7 +78,23 @@ const userSlice = createSlice({
         });
         builder.addCase(fetchUsers.rejected, (state, action) => {
             state.loading = false;
-            state.message = action.payload || 'Error al cargar los usuarios';
+            state.message = action.payload || 'Error fetching users';
+        });
+
+        // Import User
+        builder.addCase(importUserSlice.pending, (state) => {
+            state.loading = true;
+            state.processMessage = '';
+        });
+        builder.addCase(importUserSlice.fulfilled, (state, action) => {
+            state.loading = false;
+            state.processMessage = 'User imported successfully';
+            state.success = true;
+        });
+        builder.addCase(importUserSlice.rejected, (state, action) => {
+            state.loading = false;
+            state.processMessage = action.payload || 'Error importing the user';
+            state.success = false;
         });
     }
 })

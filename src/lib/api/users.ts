@@ -1,4 +1,4 @@
-import { REQRES_API_URL } from '@/src/lib/api/config'
+import { REQRES_API_URL, API_BASE_URL } from '@/src/lib/api/config'
 import { FetchApi } from './fetchApi';
 
 export async function getUsers(params: Params) {
@@ -19,4 +19,20 @@ export async function getUsers(params: Params) {
         console.log(error);
         throw error;
     }
+}
+
+export async function importUser(data: any) {
+    const options: OptionsProps = {
+        url: `${API_BASE_URL}/users`,
+        method: 'POST' as const,
+        body: data,
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
 }
