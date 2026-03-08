@@ -9,7 +9,7 @@ declare global {
     }
     type FetchPayload = {
         token: string,
-        params: Params
+        params?: Params
     }
 }
 
