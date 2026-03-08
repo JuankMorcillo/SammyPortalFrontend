@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import postReducer from "./slices/postSlice";
+import toastReducer from "./slices/toastSlice";
 
 export const store = configureStore({
     reducer: {
-        post: postReducer
+        post: postReducer,
+        toast: toastReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
