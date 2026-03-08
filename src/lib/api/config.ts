@@ -1,1 +1,2 @@
 export const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+export const REQRES_API_URL: string = process.env.NEXT_PUBLIC_REQ_RES_URL || "https://reqres.in/api/";
