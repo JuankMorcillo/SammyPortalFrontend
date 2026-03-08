@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../store'
 import { useSession } from 'next-auth/react'
@@ -9,6 +9,8 @@ import { clearProcessMessageUsers, fetchUsers, importUserSlice, selectLoadingUse
 import Table from '../components/table';
 import { user_columns } from './userColumns';
 import { fillToastInfo } from '../store/slices/toastSlice';
+import Modal from '../components/modal';
+import UserDetail from './detail/page';
 
 export default function Users() {
 
@@ -19,7 +21,16 @@ export default function Users() {
     const message = useSelector(selectUsersProcessMessage)
     const success = useSelector(selectUsersSuccess)
 
-    const { downloadIcon } = Icons({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
+    const [userData, setUserData] = useState({
+        id: 0,
+        first_name: '',
+        last_name: '',
+        email: '',
+        avatar: '',
+    })
+    const [openModal, setOpenModal] = useState(false)
+
+    const { downloadIcon, circleInfoIcon } = Icons({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
     const { successIcon } = Icons({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Icons({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
 
@@ -63,6 +74,20 @@ export default function Users() {
 
     const actions: Actions[] = [
         {
+            name: 'View Info',
+            icon: circleInfoIcon,
+            action: (row) => {
+                setUserData({
+                    id: row.id,
+                    first_name: row.first_name,
+                    last_name: row.last_name,
+                    email: row.email,
+                    avatar: row.avatar,
+                })
+                setOpenModal(true);
+            }
+        },
+        {
             name: 'Import User',
             icon: downloadIcon,
             action: (row) => {
@@ -75,7 +100,7 @@ export default function Users() {
                 }
                 importUser(userData);
             }
-        }
+        },
     ]
 
     const topActions: TopActions[] = []
@@ -90,6 +115,17 @@ export default function Users() {
                 actions={actions}
                 topActions={topActions}
             />
+
+            <Modal
+                open={openModal}
+                setOpen={setOpenModal}
+                title={'User Detail'}
+                children={
+                    <UserDetail user={userData} />
+                }
+                x_icon={true}
+            />
+
         </div>
     )
 }
