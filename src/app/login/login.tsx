@@ -35,7 +35,7 @@ export default function Login() {
                 setError('Invalid credentials');
                 setIsLoading(false);
             } else {
-                // router.push(`/`);
+                router.push(`/`);
                 console.log('Correcto');
                 
             }
