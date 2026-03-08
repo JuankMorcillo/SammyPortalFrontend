@@ -177,6 +177,7 @@ export default function Table({ columns, actions, topActions, getInfo, options }
                                 className="text-black cursor-pointer"
                                 key={index}
                                 type='button'
+                                title={action.name}
                                 style={{
                                     cursor: (row.original.status == 0 && action.name == 'eliminar')
                                         || (row.original.status == 1 && action.name == 'activar')
