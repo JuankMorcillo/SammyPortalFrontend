@@ -19,7 +19,7 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
     'users/fetchUsers',
     async ({ params }, { rejectWithValue }) => {
         try {
-            const response = await getUsers(params || initialState.params);
+            const response = await getUsers(params as Params || initialState.params as Params);
             return response;
         } catch (error: any) {
             console.error('Error fetching users:', error);

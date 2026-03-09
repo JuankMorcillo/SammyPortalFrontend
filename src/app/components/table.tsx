@@ -52,19 +52,15 @@ export default function Table({ columns, actions, topActions, getInfo, options }
             maxSize: 200,
             size: 40,
         },
-        state: options.bd ? {
+        state: {
             columnFilters,
             globalFilter,
-            isLoading,
+            isLoading: options.bd ? isLoading : false,
             pagination,
-            showProgressBars: isRefetching,
+            showProgressBars: options.bd ? isRefetching : false,
             sorting,
-        } : {
-            pagination,
-            columnFilters,
-            globalFilter,
         },
-        rowCount: rowCount,
+        rowCount: options.bd ? rowCount : (options.data?.length || 0),
         onPaginationChange: setPagination,
         muiPaginationProps: {
             color: 'primary',

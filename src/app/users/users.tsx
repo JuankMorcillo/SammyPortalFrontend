@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../store'
 import { useSession } from 'next-auth/react'
 import Icons from '../components/ui/hooks/Icons';
-import { clearProcessMessageUsers, fetchUsers, importUserSlice, selectLoadingUsers, selectUsersProcessMessage, selectUsersSuccess, setSuccessUsers } from '../store/slices/userSlice';
+import { clearProcessMessageUsers, fetchUsers, importUserSlice, selectLoadingUsers, selectUsers, selectUsersProcessMessage, selectUsersSuccess, setSuccessUsers } from '../store/slices/userSlice';
 import Table from '../components/table';
 import { user_columns } from './userColumns';
 import { fillToastInfo } from '../store/slices/toastSlice';
@@ -20,6 +20,7 @@ export default function Users() {
     const loading = useSelector(selectLoadingUsers)
     const message = useSelector(selectUsersProcessMessage)
     const success = useSelector(selectUsersSuccess)
+    const users = useSelector(selectUsers)
 
     const [userData, setUserData] = useState({
         id: 0,
@@ -105,13 +106,19 @@ export default function Users() {
 
     const topActions: TopActions[] = []
 
+    useEffect(() => {
+        const params: Params = { page: 1, per_page: 999 }
+        handleFetchUsers(params)
+    }, [session])
+
+
     return (
         <div className='flex flex-col gap-4 w-full'>
             <h1 className='text-2xl font-bold mb-4'>Users</h1>
             <Table
                 columns={user_columns}
                 getInfo={handleFetchUsers}
-                options={{ bd: true }}
+                options={{ bd: false, data: users }}
                 actions={actions}
                 topActions={topActions}
             />
