@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { FetchApi } from '@/src/lib/api/fetchApi'
+import { API_BASE_URL } from "@/src/lib/api/config"
 
 const handler = NextAuth({
     providers: [
@@ -30,9 +31,19 @@ const handler = NextAuth({
                     }
 
                     const res = await FetchApi(options)
+                    let user_id = { id: 0 };
 
                     if (res) {
-                        return { ...res, email: credentials?.email }
+
+                        if (res.token) {
+                            const options: OptionsProps = {
+                                url: `${API_BASE_URL}/users/${credentials?.email}`,
+                                method: 'GET' as const,
+                            }
+                            user_id = await FetchApi(options);
+                        }
+
+                        return { ...res, email: credentials?.email, user_id: user_id.id };
                     }
 
                 } catch (error) {
@@ -47,6 +58,7 @@ const handler = NextAuth({
             if (user) {
                 token.token = user.token
                 token.email = user.email
+                token.user_id = user.user_id
             }
             return token
         },
@@ -55,6 +67,7 @@ const handler = NextAuth({
             if (token && session.user) {
                 session.user.token = token.token as string
                 session.user.email = token.email as string
+                session.user.user_id = token.user_id as number
             }
             return session
         },
