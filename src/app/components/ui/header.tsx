@@ -88,9 +88,8 @@ export default function Header() {
 
   return (
     <>
-      {session && <div className={`h-14 border-b border-gray-200 shadow-md w-full flex items-center 
-            transition-all duration-500 ease-in-out
-        justify-between px-6 py-4 bg-linear-to-br bg-white`}>
+      {session && <div
+        className={`h-14 border-b border-gray-200 shadow-md w-full flex items-center transition-all duration-500 ease-in-out justify-between px-6 py-4 bg-linear-to-br bg-white sticky top-0 z-50`}>
 
         <div className='ml-4 text-black font-bold text-lg cursor-pointer' onClick={() => navigateTo('/')}>
           Welcome back, {userEmail}!
