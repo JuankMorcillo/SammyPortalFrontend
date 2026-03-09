@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react'
-import { PostProps } from '../types/post'
-import PostsCards from '../components/posts_cards'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
+import { AppDispatch } from '../../store';
 import { useSession } from 'next-auth/react';
-import { fetchPosts, selectPostParams, selectPosts } from '../store/slices/postSlice';
-import { selectReload } from '../store/slices/reloadSlice';
+import { PostProps } from '../../types/post';
+import { fetchMyPosts, selectPostParams, selectPosts } from '../../store/slices/postSlice';
+import { selectReload } from '../../store/slices/reloadSlice';
+import PostsCards from '../../components/posts_cards';
 
-export default function Post() {
-
+export default function page() {
     const dispatch = useDispatch<AppDispatch>();
     const { data: session } = useSession()
     const posts: PostProps[] = useSelector(selectPosts)
@@ -19,7 +18,7 @@ export default function Post() {
 
     const handleFetchPosts = async () => {
         if (session?.user?.token) {
-            await dispatch(fetchPosts({ token: session.user.token, params }));
+            await dispatch(fetchMyPosts({ id: session.user.user_id, params }));
         }
     }
 
@@ -32,7 +31,7 @@ export default function Post() {
         <div className='flex flex-col mx-auto px-4 py-8 h-1/2 w-full max-w-2xl'>
             {
                 posts && posts.map((post) => (
-                    <PostsCards key={post.id} post={post} />
+                    <PostsCards key={post.id} post={post} edit />
                 ))
             }
         </div>

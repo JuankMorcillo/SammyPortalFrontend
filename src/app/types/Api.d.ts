@@ -1,3 +1,5 @@
+import { PostParams } from "./post"
+
 declare global {
     type OptionsProps = {
         url: string,        
@@ -9,7 +11,7 @@ declare global {
     }
     type FetchPayload = {
         token?: string,
-        params?: Params
+        params?: Params | PostParams
     }
 }
 
