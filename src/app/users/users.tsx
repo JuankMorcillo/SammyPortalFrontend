@@ -10,7 +10,7 @@ import Table from '../components/table';
 import { user_columns } from './userColumns';
 import { fillToastInfo } from '../store/slices/toastSlice';
 import Modal from '../components/modal';
-import UserDetail from './detail/page';
+import UserDetail from './detail/UserDetail';
 
 export default function Users() {
 
