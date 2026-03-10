@@ -1,6 +1,14 @@
 // src/lib/utils/dateFormatter.ts
 
+function getTimezoneOffset(): number {
+  return -new Date().getTimezoneOffset() / 60; // Retorna offset en horas
+}
+
 export function formatDateLikeFacebook(dateString: string): string {
+
+  // convertir la fecha a utc-5
+
+
   // Parsear la fecha en formato MM-DD-YYYY HH:MM:SS
   const [datePart, timePart] = dateString.split(' ');
   const [month, day, year] = datePart.split('-');
@@ -15,8 +23,12 @@ export function formatDateLikeFacebook(dateString: string): string {
     parseInt(seconds)
   );
 
+  const offset = getTimezoneOffset() * 60 * 60 * 1000;
+  const postDateUTC = new Date(postDate.getTime() + offset);
+
+
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - postDate.getTime()) / 1000);
+  const diffInSeconds = Math.floor((now.getTime() - postDateUTC.getTime()) / 1000);
 
   // Si es en el futuro
   if (diffInSeconds < 0) {
@@ -55,5 +67,5 @@ export function formatDateLikeFacebook(dateString: string): string {
     minute: '2-digit'
   };
 
-  return new Intl.DateTimeFormat('en-EN', options).format(postDate);
+  return new Intl.DateTimeFormat('en-EN', options).format(postDateUTC);
 }
