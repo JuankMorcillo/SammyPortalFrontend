@@ -17,8 +17,8 @@ export default function page() {
     const params = useSelector(selectPostParams)
 
     const handleFetchPosts = async () => {
-        if (session?.user?.token) {
-            await dispatch(fetchMyPosts({ id: session.user.user_id, params }));
+        if (session?.user?.accessToken) {
+            await dispatch(fetchMyPosts({ id: session.user.id, token: session?.user?.accessToken, params }));
         }
     }
 

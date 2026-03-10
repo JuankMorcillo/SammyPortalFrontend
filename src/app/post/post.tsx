@@ -18,8 +18,8 @@ export default function Post() {
     const params = useSelector(selectPostParams)
 
     const handleFetchPosts = async () => {
-        if (session?.user?.token) {
-            await dispatch(fetchPosts({ token: session.user.token, params }));
+        if (session?.user?.accessToken) {
+            await dispatch(fetchPosts({ token: session.user.accessToken, params }));
         }
     }
 

@@ -21,10 +21,13 @@ export async function getUsers(params: Params) {
     }
 }
 
-export async function importUser(data: any) {
+export async function importUser(token: string, data: any) {
     const options: OptionsProps = {
         url: `${API_BASE_URL}/users`,
         method: 'POST' as const,
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
         body: data,
     }
 
