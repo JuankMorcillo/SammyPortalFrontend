@@ -60,7 +60,7 @@ export default function Header() {
   }
 
   const canCreatePosts = () => {
-    if (session?.user.user_id) {
+    if (session?.user.id) {
       setModalCreatePost(true);
     } else {
       toast.error('You must be registered locally to create posts');

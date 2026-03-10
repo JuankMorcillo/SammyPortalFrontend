@@ -36,7 +36,7 @@ export default function Users() {
     const { circleXMarkIcon } = Icons({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const handleFetchUsers = async (params: Params) => {
-        if (session?.user.token) {
+        if (session?.user.accessToken) {
             const result = await dispatch(
                 fetchUsers({ params: params })
             );
@@ -49,9 +49,9 @@ export default function Users() {
     }
 
     const importUser = async (data: any) => {
-        if (session?.user.token) {
+        if (session?.user.accessToken) {
             await dispatch(
-                importUserSlice(data)
+                importUserSlice({ data, token: session.user.accessToken })
             );
         }
     }

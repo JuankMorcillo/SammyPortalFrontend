@@ -8,7 +8,7 @@ export async function getPosts(token: string, params: PostParams) {
         url: `${API_BASE_URL}/posts`,
         method: 'GET' as const,
         headers: {
-            Authorization: 'bearer ' + token,
+            Authorization: 'Bearer ' + token,
         },
         params
     }
@@ -21,11 +21,14 @@ export async function getPosts(token: string, params: PostParams) {
     }
 }
 
-export async function getMyPosts(id: number, params: PostParams) {
-
+export async function getMyPosts(id: number, token: string, params: PostParams) {
+                
     const options: OptionsProps = {
         url: `${API_BASE_URL}/posts/${id}`,
         method: 'GET' as const,
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
         params
     }
 
@@ -37,11 +40,14 @@ export async function getMyPosts(id: number, params: PostParams) {
     }
 }
 
-export async function createPost(data: PostProps) {
+export async function createPost(token: string, data: PostProps) {
 
     const options: OptionsProps = {
         url: `${API_BASE_URL}/posts`,
         method: 'POST' as const,
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
         body: data
     }
 
@@ -54,11 +60,14 @@ export async function createPost(data: PostProps) {
 
 }
 
-export async function updatePost(data: PostProps) {
+export async function updatePost(token: string, data: PostProps) {
 
     const options: OptionsProps = {
         url: `${API_BASE_URL}/posts/${data.id}`,
         method: 'PATCH' as const,
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
         body: data
     }
 

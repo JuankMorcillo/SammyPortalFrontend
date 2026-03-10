@@ -33,9 +33,9 @@ export const fetchPosts = createAsyncThunk<any, FetchPayload, { rejectValue: str
 
 export const fetchMyPosts = createAsyncThunk<any, any, { rejectValue: string }>(
     'posts/fetchMyPosts',
-    async ({ id, params }, { rejectWithValue }) => {
+    async ({ id, token, params }, { rejectWithValue }) => {
         try {
-            const response = await getMyPosts(id, params as PostParams);
+            const response = await getMyPosts(id, token, params as PostParams);
             return response;
         } catch (error: any) {
             console.error('Error fetching my posts:', error);
@@ -45,11 +45,11 @@ export const fetchMyPosts = createAsyncThunk<any, any, { rejectValue: string }>(
     }
 )
 
-export const createPostSlice = createAsyncThunk<any, { post: PostProps }, { rejectValue: string }>(
+export const createPostSlice = createAsyncThunk<any, { post: PostProps, token: string }, { rejectValue: string }>(
     'posts/createPost',
-    async ({ post }, { rejectWithValue }) => {
+    async ({ post, token }, { rejectWithValue }) => {
         try {
-            const response = await createPost(post as PostProps);
+            const response = await createPost(token, post as PostProps);
             return response;
         } catch (error: any) {
             console.error('Error creating post:', error);
@@ -59,11 +59,11 @@ export const createPostSlice = createAsyncThunk<any, { post: PostProps }, { reje
     }
 )
 
-export const updatePostSlice = createAsyncThunk<any, { post: PostProps }, { rejectValue: string }>(
+export const updatePostSlice = createAsyncThunk<any, { post: PostProps, token: string }, { rejectValue: string }>(
     'posts/updatePost',
-    async ({ post }, { rejectWithValue }) => {
+    async ({ post, token }, { rejectWithValue }) => {
         try {
-            const response = await updatePost(post as PostProps);
+            const response = await updatePost(token, post as PostProps);
             return response;
         } catch (error: any) {
             console.error('Error updating post:', error);
