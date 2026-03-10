@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend Sammy Portal
 
-## Getting Started
+Portal frontend construido con **Next.js 16**, **React 19**, **Material UI**, **Redux Toolkit** y **NextAuth** para autenticación.
 
-First, run the development server:
+El proyecto fue desplegado en vercel y se puede acceder a través de la siguiente URL: [sammy-portal-frontend.vercel.app](sammy-portal-frontend.vercel.app)
+
+---
+
+## Instalación
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clonar el repositorio
+git clone <url-del-repositorio>
+cd frontend_portal
+
+# Instalar dependencias
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Ejecución local
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Iniciar el servidor de desarrollo
+pnpm dev
+```
 
-## Learn More
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Ejecución de tests
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+El proyecto utiliza **Vitest** con **Testing Library** y **jsdom** como entorno.
 
-## Deploy on Vercel
+```bash
+# Ejecutar tests una sola vez
+pnpm test
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Ejecutar tests en modo watch
+pnpm test:watch
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Ejecutar tests con interfaz visual
+pnpm test:ui
+```
+
+---
+
+## Variables de entorno
+
+Crear un archivo `.env.local` en la raíz del proyecto con las siguientes variables:
+
+| Variable | Descripción | Valor por defecto |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | URL base de la API del backend | `http://localhost:4000/api` |
+| `NEXT_PUBLIC_REQ_RES_URL` | URL de la API externa ReqRes | `https://reqres.in/api/` |
+| `NEXT_PUBLIC_API_REQ_RES_KEY` | API key para el servicio ReqRes | — |
+| `NEXTAUTH_SECRET` | Secret para firmar los tokens de NextAuth | — |
+| `NEXTAUTH_URL` | URL canónica de la aplicación (requerida por NextAuth) | `http://localhost:3000` |
+
+Ejemplo de `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
+NEXT_PUBLIC_REQ_RES_URL=https://reqres.in/api/
+NEXT_PUBLIC_API_REQ_RES_KEY=tu_api_key
+NEXTAUTH_SECRET=un_secret_seguro
+NEXTAUTH_URL=http://localhost:3000
+```
+
+---
+
+## Deploy
+
+El despliegue se realiza en **Vercel** de forma automática:
+
+1. Conectar el repositorio a un proyecto en [Vercel](https://vercel.com/).
+2. Configurar las variables de entorno en el dashboard de Vercel (**Settings → Environment Variables**).
+3. Cada push a la rama `main` dispara un despliegue automático a producción.
+
+```bash
+# Para generar un build de producción localmente
+pnpm build
+
+# Para iniciar el servidor de producción localmente
+pnpm start
+```
+
+> **Nota:** No es necesario ejecutar estos comandos para el deploy; Vercel se encarga del build y despliegue automáticamente al detectar cambios en `main`.
