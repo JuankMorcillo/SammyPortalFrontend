@@ -31,9 +31,11 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
 
 export const importUserSlice = createAsyncThunk<any, any, { rejectValue: string }>(
     'users/importUser',
-    async (data, { rejectWithValue }) => {
+    async ({ data, token }, { rejectWithValue }) => {
         try {
-            const response = await importUser(data);
+            console.log(token);
+            
+            const response = await importUser(token, data);
             return response;
         } catch (error: any) {
             console.error('Error importing user:', error);

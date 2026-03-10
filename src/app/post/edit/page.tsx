@@ -76,19 +76,19 @@ export default function EditPost({ post = {
     }
 
     const handleUpdatePost = async () => {
-        if (session?.user.token) {
+        if (session?.user?.accessToken) {
 
             const postData: PostProps = {
                 id: post.id,
                 title: info?.title || '',
                 content: info?.content || '',
                 url_image: info?.url_image,
-                authorUserId: session.user.user_id,
+                authorUserId: session.user.id,
                 status: info?.status
             }
 
             const result = await dispatch(
-                updatePostSlice({ post: postData as PostProps })
+                updatePostSlice({ post: postData as PostProps, token: session.user.accessToken })
             )
 
             if (result.type == 'posts/updatePost/fulfilled') {

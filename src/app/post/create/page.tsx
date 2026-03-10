@@ -55,17 +55,17 @@ export default function CreatePost() {
     }
 
     const handleCreatePost = async () => {
-        if (session?.user.token) {
+        if (session?.user?.accessToken) {
 
             const postData: PostProps = {
                 title: info?.title || '',
                 content: info?.content || '',
                 url_image: info?.url_image,
-                authorUserId: session.user.user_id 
+                authorUserId: session.user.id 
             }                        
 
             const result = await dispatch(
-                createPostSlice({ post: postData as PostProps })
+                createPostSlice({ post: postData as PostProps, token: session.user.accessToken })
             )
 
             if (result.type == 'posts/createPost/fulfilled') {
